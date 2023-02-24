@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "286371502455",
+    "project_id": "makeu-2313f",
+    "storage_bucket": "makeu-2313f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286371502455:android:ebb14ea4f7ffaebab36972",
+        "android_client_info": {
+          "package_name": "com.example.makeu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286371502455-hkb6t2l3u72q4qt8vaf13hba2oi6s7u7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEvjh4QyRw69crLGSG07D9VwUfKgqWs3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286371502455-hkb6t2l3u72q4qt8vaf13hba2oi6s7u7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
