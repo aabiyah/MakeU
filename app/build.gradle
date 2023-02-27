@@ -13,6 +13,7 @@ android {
         minSdk 19
         targetSdk 33
         versionCode 1
+        multiDexEnabled true
 
         versionName "1.0"
 
@@ -52,4 +53,5 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx'
     // Also add the dependency for the Google Play services library and specify its version
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
+    implementation'com.android.support:multidex:1.0.3'
 }
