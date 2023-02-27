@@ -11,11 +11,15 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class SignUpFragment : Fragment() {
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var confirmPassword: EditText
+    private lateinit var fAuth: FirebaseAuth
 
 
     override fun onCreateView(
@@ -28,6 +32,7 @@ class SignUpFragment : Fragment() {
         username = view.findViewById(R.id.reg_username)
         password = view.findViewById(R.id.reg_password)
         confirmPassword = view.findViewById(R.id.reg_confirm_password)
+        fAuth = Firebase.auth
 
         view.findViewById<Button>(R.id.button_login_reg).setOnClickListener {
             var navRegister = activity as FragmentNavigation
@@ -37,6 +42,18 @@ class SignUpFragment : Fragment() {
             validateEmptyForm()
         }
         return view
+    }
+
+    private fun firebaseSignUp() {
+        fAuth.createUserWithEmailAndPassword(username.text.toString(), password.text.toString())
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    Toast.makeText(context, "Sign Up Successful!", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
+                }
+
+            }
     }
 
     private fun validateEmptyForm() {
@@ -53,20 +70,20 @@ class SignUpFragment : Fragment() {
             username.text.toString().isNotEmpty() &&
                     password.text.toString().isNotEmpty() &&
                     confirmPassword.text.toString().isNotEmpty() -> {
-                        if(username.text.toString().matches(Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"))) {
-                            if(password.text.toString().length>=5) {
-                                if(password.text.toString() == confirmPassword.text.toString()) {
-                                    Toast.makeText(context, "Sign Up Successful!", Toast.LENGTH_SHORT).show()
-                                } else {
-                                    confirmPassword.setError("Passwords Don't Match!")
-                                }
-                            } else {
-                                password.setError("Please Enter At Least 5 Characters")
-                            }
+                if (username.text.toString().matches(Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"))) {
+                    if (password.text.toString().length >= 5) {
+                        if (password.text.toString() == confirmPassword.text.toString()) {
+                            firebaseSignUp()
                         } else {
-                            username.setError("Please Enter Valid Email ID")
+                            confirmPassword.setError("Passwords Don't Match!")
                         }
+                    } else {
+                        password.setError("Please Enter At Least 5 Characters")
                     }
+                } else {
+                    username.setError("Please Enter Valid Email ID")
+                }
+            }
         }
     }
 }
