@@ -9,11 +9,16 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlin.math.log
 
 
 class LoginFragment : Fragment() {
     private lateinit var username: EditText
     private lateinit var password: EditText
+    private lateinit var fAuth: FirebaseAuth
 
 
     override fun onCreateView(
@@ -25,6 +30,7 @@ class LoginFragment : Fragment() {
 
         username = view.findViewById(R.id.login_username)
         password = view.findViewById(R.id.login_password)
+        fAuth = Firebase.auth
 
         view.findViewById<Button>(R.id.button_signup).setOnClickListener {
             var navRegister = activity as FragmentNavigation
@@ -37,7 +43,24 @@ class LoginFragment : Fragment() {
         return view
     }
 
-    private fun validateForm() {
+    private fun firebaseSignIn() {
+        val loginbutton = view?.findViewById<Button>(R.id.button_login)
+        loginbutton?.isEnabled = false
+        loginbutton?.alpha = 0.5f //Hide button if Login already in progress
+        fAuth.signInWithEmailAndPassword(username.text.toString(), password.text.toString()).addOnCompleteListener {
+            task ->
+            if(task.isSuccessful) {
+                var navHome = activity as FragmentNavigation
+                navHome.navigateFrag(HomeFragment(), addToStack = true)
+            } else {
+                loginbutton?.isEnabled = true
+                loginbutton?.alpha = 1.0f
+                Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+     public fun validateForm() {
         when {
             TextUtils.isEmpty(username.text.toString().trim()) -> {
                 username.error = "Please Enter Username"
@@ -49,11 +72,13 @@ class LoginFragment : Fragment() {
             username.text.toString().isNotEmpty() &&
                     password.text.toString().isNotEmpty()  -> {
                 if(username.text.toString().matches(Regex("[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+"))) {
-                    Toast.makeText(context, "Login Successful!", Toast.LENGTH_SHORT).show()
+                    firebaseSignIn()
                 } else {
                     username.error = "Please Enter Valid Email ID"
                 }
             }
         }
     }
+
+
 }

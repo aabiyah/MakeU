@@ -45,11 +45,17 @@ class SignUpFragment : Fragment() {
     }
 
     private fun firebaseSignUp() {
+        val signupbutton = view?.findViewById<Button>(R.id.button_signup_reg)
+        signupbutton?.isEnabled = false
+        signupbutton?.alpha = 0.5f
         fAuth.createUserWithEmailAndPassword(username.text.toString(), password.text.toString())
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    Toast.makeText(context, "Sign Up Successful!", Toast.LENGTH_SHORT).show()
+                    var navHome = activity as FragmentNavigation
+                    navHome.navigateFrag(HomeFragment(), addToStack = true) // Adding the HomeFragment after the SignUpFragment if sign up is successful
                 } else {
+                    signupbutton?.isEnabled = true
+                    signupbutton?.alpha = 1.0f
                     Toast.makeText(context, task.exception?.message, Toast.LENGTH_SHORT).show()
                 }
 
