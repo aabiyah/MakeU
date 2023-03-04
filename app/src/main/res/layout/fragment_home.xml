@@ -14,7 +14,7 @@
         android:src="@drawable/yourhabits" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/tasksRecyclerView"
+        android:id="@+id/habitsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="200dp"

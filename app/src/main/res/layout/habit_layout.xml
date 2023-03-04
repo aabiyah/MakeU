@@ -20,7 +20,7 @@
             android:layout_centerHorizontal="true"
             android:buttonTint="@color/colorAccent"
             android:paddingStart="8dp"
-            tools:text="Go to the market and bring vegetables immediately today." />
+            tools:text="Read 50 pages" />
 
     </RelativeLayout>
 
