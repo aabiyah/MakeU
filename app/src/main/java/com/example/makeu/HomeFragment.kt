@@ -1,68 +1,79 @@
 package com.example.makeu
 
+import android.opengl.Visibility
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.makeu.Adapters.HabitAdapter
+import com.example.makeu.DataClass.Habit
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var  recyclerview: RecyclerView
+    val data = ArrayList<Habit>()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         var view = inflater.inflate(R.layout.fragment_home, container, false)
         view.findViewById<Button>(R.id.button_logout).setOnClickListener{
             Firebase.auth.signOut()
             var navLogin = activity as FragmentNavigation
             navLogin.navigateFrag(LoginFragment(), addToStack = false)
         } //On clicking on Log Out button, signOut method is called and if signOut is successful, we move on to Login screen
+
+        recyclerview = view.findViewById<RecyclerView>(R.id.habitRec)
+
+        //Added dummy data, you can add more simply by copying it
+        data.add(Habit("Read 50 Pages"))
+        data.add(Habit("Morning"))
+        data.add(Habit("Five Time Prayers"))
+
+        setupRec()
+
+        view.findViewById<FloatingActionButton>(R.id.button_addhabit).setOnClickListener {
+            //Act like dialog-box
+
+            view.findViewById<FrameLayout>(R.id.add_habit_layout).visibility = View.VISIBLE
+            recyclerview.visibility =View.GONE
+            view.findViewById<EditText>(R.id.newHabitText).text = null
+        }
+
+        view.findViewById<FrameLayout>(R.id.add_habit_layout).setOnClickListener(View.OnClickListener {
+            //to hide dialog box
+
+            view.findViewById<FrameLayout>(R.id.add_habit_layout).visibility = View.GONE
+            recyclerview.visibility = View.VISIBLE
+        })
+
+        view.findViewById<Button>(R.id.newHabitButton).setOnClickListener {
+            //to add new-habit
+
+            data.add(Habit(view.findViewById<EditText>(R.id.newHabitText).text.toString()))
+            setupRec()
+            view.findViewById<FrameLayout>(R.id.add_habit_layout).visibility = View.GONE
+            recyclerview.visibility = View.VISIBLE
+            Toast.makeText(context, "Habit Added", Toast.LENGTH_SHORT).show()
+        }
+
         return view
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    private fun setupRec() {
+        // recycler view setup
+        recyclerview.layoutManager = LinearLayoutManager(context)
+        val adapter = context?.let { HabitAdapter(data, it) }
+        recyclerview.adapter = adapter
     }
 }
