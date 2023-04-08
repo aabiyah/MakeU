@@ -20,7 +20,9 @@ import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
     private lateinit var  recyclerview: RecyclerView
+    val currentUser = Firebase.auth.currentUser
     val data = ArrayList<Habit>()
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
