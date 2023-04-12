@@ -15,13 +15,16 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.makeu.Adapters.HabitAdapter
 import com.example.makeu.DataClass.Habit
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
     private lateinit var  recyclerview: RecyclerView
     val currentUser = Firebase.auth.currentUser
     val data = ArrayList<Habit>()
+
 
 
     override fun onCreateView(
@@ -37,10 +40,12 @@ class HomeFragment : Fragment() {
 
         recyclerview = view.findViewById<RecyclerView>(R.id.habitRec)
 
-        //Added dummy data, you can add more simply by copying it
-        data.add(Habit("Read 50 Pages"))
-        data.add(Habit("Morning"))
-        data.add(Habit("Five Time Prayers"))
+        // Initialize Firebase
+        context?.let { FirebaseApp.initializeApp(it) }
+        // Get Firebase Realtime Database instance
+        val database = FirebaseDatabase.getInstance()
+        // Store model data in Firebase Realtime Database
+        val ref = database.reference
 
         setupRec()
 
@@ -61,7 +66,7 @@ class HomeFragment : Fragment() {
 
         view.findViewById<Button>(R.id.newHabitButton).setOnClickListener {
             //to add new-habit
-
+            ref.setValue(view.findViewById<EditText>(R.id.newHabitText).text.toString())
             data.add(Habit(view.findViewById<EditText>(R.id.newHabitText).text.toString()))
             setupRec()
             view.findViewById<FrameLayout>(R.id.add_habit_layout).visibility = View.GONE

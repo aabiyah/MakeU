@@ -15,14 +15,6 @@ class MainActivity(override var database: FirebaseDatabase) : AppCompatActivity(
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         fAuth = Firebase.auth
-        // Initialize Firebase
-        FirebaseApp.initializeApp(this)
-        // Get Firebase Realtime Database instance
-        database = FirebaseDatabase.getInstance()
-        // Store model data in Firebase Realtime Database
-        val modelData = "value1"
-        val modelDataRef = database.reference.child("modelData")
-        modelDataRef.setValue(modelData)
 
         val currentUser = fAuth.currentUser
         if(currentUser != null) {
