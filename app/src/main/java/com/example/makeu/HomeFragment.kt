@@ -86,9 +86,10 @@ class HomeFragment : Fragment() {
 
         view.findViewById<Button>(R.id.newHabitButton).setOnClickListener {
             //to add new-habit
+            data.clear()
             myRef.push().setValue(view.findViewById<EditText>(R.id.newHabitText).text.toString())
-            data.add(Habit(view.findViewById<EditText>(R.id.newHabitText).text.toString()))
-            setupRec()
+//            data.add(Habit(view.findViewById<EditText>(R.id.newHabitText).text.toString()))
+//            setupRec()
             view.findViewById<FrameLayout>(R.id.add_habit_layout).visibility = View.GONE
             recyclerview.visibility = View.VISIBLE
             Toast.makeText(context, "Habit Added", Toast.LENGTH_SHORT).show()
