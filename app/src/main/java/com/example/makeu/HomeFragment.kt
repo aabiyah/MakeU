@@ -2,6 +2,7 @@ package com.example.makeu
 
 import android.opengl.Visibility
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,12 +16,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.makeu.Adapters.HabitAdapter
 import com.example.makeu.DataClass.Habit
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.FirebaseApp
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
 class HomeFragment : Fragment() {
     private lateinit var  recyclerview: RecyclerView
+    val currentUser = Firebase.auth.currentUser
     val data = ArrayList<Habit>()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,12 +45,29 @@ class HomeFragment : Fragment() {
 
         recyclerview = view.findViewById<RecyclerView>(R.id.habitRec)
 
-        //Added dummy data, you can add more simply by copying it
-        data.add(Habit("Read 50 Pages"))
-        data.add(Habit("Morning"))
-        data.add(Habit("Five Time Prayers"))
+        // Write a message to the database
+        val database = Firebase.database
+        val myRef = database.getReference("habit")
 
-        setupRec()
+        //myRef.setValue("Hello, World!")
+        // Read from the database
+        myRef.addValueEventListener(object: ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                for (habitSnap in snapshot.children) {
+                    val value = habitSnap.getValue<String>()
+                    data.add(Habit(value.toString()))
+                    Log.d("Value", "Value is: " + value)
+                }
+                setupRec()
+
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Log.w("Value", "Failed to read value.", error.toException())
+            }
+
+        })
+
 
         view.findViewById<FloatingActionButton>(R.id.button_addhabit).setOnClickListener {
             //Act like dialog-box
@@ -59,7 +86,7 @@ class HomeFragment : Fragment() {
 
         view.findViewById<Button>(R.id.newHabitButton).setOnClickListener {
             //to add new-habit
-
+            myRef.push().setValue(view.findViewById<EditText>(R.id.newHabitText).text.toString())
             data.add(Habit(view.findViewById<EditText>(R.id.newHabitText).text.toString()))
             setupRec()
             view.findViewById<FrameLayout>(R.id.add_habit_layout).visibility = View.GONE

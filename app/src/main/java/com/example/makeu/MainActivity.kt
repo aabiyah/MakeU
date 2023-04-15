@@ -36,4 +36,5 @@ class MainActivity : AppCompatActivity(), FragmentNavigation {
         }
         transaction.commit()
     }
+
 }
