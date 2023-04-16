@@ -20,9 +20,8 @@ class HabitAdapter(private val list:List<Habit>, context: Context): RecyclerView
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        val ItemsViewModel = list[position]
-        holder.habitText.text = ItemsViewModel.habit
-
+        val itemsViewModel = list[position]
+        holder.habitText.text = itemsViewModel.habit
     }
 
     override fun getItemCount(): Int {
