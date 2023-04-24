@@ -26,7 +26,9 @@ Future Scope:
 4. Statistics: Weekly and monthly statistics to allow the user to track his/her progress and improve if needed.
 5. Access to treatment: Adding an option to reach out to doctors or therapist for treating bad habits.
 
-
 License:
 This project is licensed under the MIT License.
 
+
+
+This project is licensed under the MIT License.
