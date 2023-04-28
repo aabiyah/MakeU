@@ -25,13 +25,22 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.database.ktx.getValue
 import com.google.firebase.ktx.Firebase
 
+
+//This code is a Kotlin class called "HomeFragment" that extends the AndroidX Fragment class. The purpose of this class is to define the behavior of a fragment in an Android app that displays a list of habits and allows the user to add new habits.
+//
+//When the fragment is created, it initializes a RecyclerView to display the list of habits, sets up a connection to the Firebase Realtime Database to read and write habit data, and sets up click listeners for buttons to allow the user to log out, add a new habit.
+
 class HomeFragment : Fragment() {
     private lateinit var  recyclerview: RecyclerView
     val currentUser = Firebase.auth.currentUser
     val data = ArrayList<Habit>()
 
 
-
+//    This method is used to inflate a layout file and initialize the views that are contained within it.
+//
+//    In the HomeFragment class, the onCreateView method inflates a layout file called fragment_home.xml and sets up click listeners for buttons and the RecyclerView. It also initializes the Firebase Realtime Database reference and sets up an event listener to listen for changes in the "habit" node and update the RecyclerView when the data changes.
+//
+//    Once the view hierarchy is created and initialized, the onCreateView method returns the top-level view of the layout file to be displayed in the fragment.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

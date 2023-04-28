@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.makeu.DataClass.Habit
 import com.example.makeu.R
-
+//Adapter classes allow default implementation of listeners
 class HabitAdapter(private val list:List<Habit>, context: Context): RecyclerView.Adapter<HabitAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

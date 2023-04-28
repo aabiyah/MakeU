@@ -14,13 +14,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlin.math.log
 
+//Using the firebaseSignIn() function to help log in and validate a user.
 
 class LoginFragment : Fragment() {
     private lateinit var username: EditText
     private lateinit var password: EditText
     private lateinit var fAuth: FirebaseAuth
 
-
+//This method is used to inflate a layout file and initialize the views that are contained within it.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
